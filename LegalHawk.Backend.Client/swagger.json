@@ -1,0 +1,165 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "LegalHawk.Backend",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/v1/legal-contracts": {
+      "get": {
+        "tags": [
+          "LegalContracts"
+        ],
+        "parameters": [
+          {
+            "name": "Filters",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Sorts",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "maximum": 2147483647,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "maximum": 2147483647,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "LegalContracts"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LegalContractCreateOptions"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LegalContractCreateOptions"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LegalContractCreateOptions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/legal-contracts/{id}": {
+      "get": {
+        "tags": [
+          "LegalContracts"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "LegalContracts"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LegalContractCreateOptions": {
+        "required": [
+          "author",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "author": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string",
+            "description": "The name of the author of the contract",
+            "example": "Mr. John Doe"
+          },
+          "title": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string",
+            "description": "The title of the contract",
+            "example": "Sale of a car"
+          },
+          "description": {
+            "maxLength": 512,
+            "type": "string",
+            "description": "A short description of the legal contract",
+            "nullable": true,
+            "example": "The contract is about the sale of a car, the car is a 2020 model and has a mileage of 1000km, the car is in good condition."
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
