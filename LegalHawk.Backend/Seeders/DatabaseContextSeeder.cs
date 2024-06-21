@@ -24,7 +24,7 @@ public class DatabaseContextSeeder(DatabaseContext dbContext)
     /// <returns></returns>
     public async Task TrySeedAsync()
     {
-        await TrySeedLegalContracts();
+        AddLegalContracts();
 
         await dbContext.SaveChangesAsync();
     }
@@ -33,7 +33,7 @@ public class DatabaseContextSeeder(DatabaseContext dbContext)
     /// Try to seed the database with some legal contracts
     /// </summary>
     /// <returns></returns>
-    private async Task TrySeedLegalContracts()
+    private void AddLegalContracts()
     {
         dbContext.LegalConracts.AddRange([
             new() 
