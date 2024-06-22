@@ -1,5 +1,3 @@
-using LegalHawk.Backend.Seeders;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,6 +10,8 @@ builder.Services.AddSwaggerGen(options =>
     var xmlFile = $"{Assembly.GetEntryAssembly()!.GetName().Name!}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     options.IncludeXmlComments(xmlPath);
+
+    options.EnableAnnotations();
 });
 
 builder.Services.AddScoped<ISieveProcessor, SieveProcessor>();

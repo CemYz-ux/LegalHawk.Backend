@@ -11,8 +11,8 @@
   "codeGenerators": {
     "openApiToTypeScriptClient": {
       "className": "LegalHawkBackendClient",
-      "moduleName": "",
-      "namespace": "",
+      "moduleName": "LegalHawkClientModule",
+      "namespace": "LegalHawk.Frontend.Client",
       "typeScriptVersion": 2.7,
       "template": "Axios",
       "promiseType": "Promise",

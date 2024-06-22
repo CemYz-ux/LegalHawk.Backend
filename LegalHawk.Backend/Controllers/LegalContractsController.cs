@@ -4,6 +4,9 @@
 public class LegalContractsController(ILegalContractService legalContractsService) : BaseController
 {
     [HttpGet("legal-contracts")]
+    [SwaggerResponse(StatusCodes.Status200OK, nameof(OkListResponse), typeof(OkListResponse<LegalContractListDto>))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, nameof(NotFound))]
+    [SwaggerOperation(OperationId = nameof(GetLegalContractsAsync))]
     public async Task<IActionResult> GetLegalContractsAsync([FromQuery] SieveModel sieveModel)
     {
         var legalContracts = await legalContractsService.GetLegalContractsAsync(sieveModel);
@@ -14,6 +17,9 @@ public class LegalContractsController(ILegalContractService legalContractsServic
     }
 
     [HttpGet("legal-contracts/{id}")]
+    [SwaggerResponse(StatusCodes.Status200OK, nameof(OkListResponse), typeof(OkListResponse<LegalContractDetailDto>))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, nameof(NotFound))]
+    [SwaggerOperation(OperationId = nameof(GetLegalContractByIdAsync))]
     public async Task<IActionResult> GetLegalContractByIdAsync([FromRoute] Guid id)
     {
         var legalContract = await legalContractsService.GetLegalContractByIdAsync(id)
@@ -23,6 +29,8 @@ public class LegalContractsController(ILegalContractService legalContractsServic
     }
 
     [HttpPost("legal-contracts")]
+    [SwaggerResponse(StatusCodes.Status201Created, nameof(CreatedResponse), typeof(OkListResponse<LegalContractDetailDto>))]
+    [SwaggerOperation(OperationId = nameof(CreateLegalConractAsync))]
     public async Task<IActionResult> CreateLegalConractAsync([FromBody] LegalContractCreateOptions createOptions)
     {
         var legalContract = await legalContractsService.CreateLegalContractAsync(createOptions);
@@ -31,6 +39,8 @@ public class LegalContractsController(ILegalContractService legalContractsServic
     }
 
     [HttpDelete("legal-contracts/{id}")]
+    [SwaggerResponse(StatusCodes.Status404NotFound, nameof(NotFound))]
+    [SwaggerOperation(OperationId = nameof(DeleteLegalContractById))]
     public async Task<IActionResult> DeleteLegalContractById([FromRoute] Guid id)
     {
         await legalContractsService.DeleteLegalContractAsync(id);

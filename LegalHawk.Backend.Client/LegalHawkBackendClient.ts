@@ -10,6 +10,9 @@
 
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelToken } from 'axios';
 
+export module LegalHawkClientModule {
+namespace LegalHawk.Frontend.Client {
+
 export class LegalHawkBackendClient {
     protected instance: AxiosInstance;
     protected baseUrl: string;
@@ -28,9 +31,9 @@ export class LegalHawkBackendClient {
      * @param sorts (optional) 
      * @param page (optional) 
      * @param pageSize (optional) 
-     * @return OK
+     * @return OkListResponse
      */
-    legalContractsGET(filters: string | undefined, sorts: string | undefined, page: number | undefined, pageSize: number | undefined, cancelToken?: CancelToken): Promise<void> {
+    getLegalContracts(filters: string | undefined, sorts: string | undefined, page: number | undefined, pageSize: number | undefined, cancelToken?: CancelToken): Promise<LegalContractListDtoOkListResponse> {
         let url_ = this.baseUrl + "/api/v1/legal-contracts?";
         if (filters === null)
             throw new Error("The parameter 'filters' cannot be null.");
@@ -54,6 +57,7 @@ export class LegalHawkBackendClient {
             method: "GET",
             url: url_,
             headers: {
+                "Accept": "text/plain"
             },
             cancelToken
         };
@@ -65,11 +69,11 @@ export class LegalHawkBackendClient {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processLegalContractsGET(_response);
+            return this.processGetLegalContracts(_response);
         });
     }
 
-    protected processLegalContractsGET(response: AxiosResponse): Promise<void> {
+    protected processGetLegalContracts(response: AxiosResponse): Promise<LegalContractListDtoOkListResponse> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -81,20 +85,27 @@ export class LegalHawkBackendClient {
         }
         if (status === 200) {
             const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = LegalContractListDtoOkListResponse.fromJS(resultData200);
+            return Promise.resolve<LegalContractListDtoOkListResponse>(result200);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            return throwException("NotFound", status, _responseText, _headers);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<void>(null as any);
+        return Promise.resolve<LegalContractListDtoOkListResponse>(null as any);
     }
 
     /**
      * @param body (optional) 
-     * @return OK
+     * @return CreatedResponse
      */
-    legalContractsPOST(body: LegalContractCreateOptions | undefined, cancelToken?: CancelToken): Promise<void> {
+    createLegalConract(body: LegalContractCreateOptions | undefined, cancelToken?: CancelToken): Promise<LegalContractDetailDtoOkListResponse> {
         let url_ = this.baseUrl + "/api/v1/legal-contracts";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -106,6 +117,7 @@ export class LegalHawkBackendClient {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
+                "Accept": "text/plain"
             },
             cancelToken
         };
@@ -117,11 +129,11 @@ export class LegalHawkBackendClient {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processLegalContractsPOST(_response);
+            return this.processCreateLegalConract(_response);
         });
     }
 
-    protected processLegalContractsPOST(response: AxiosResponse): Promise<void> {
+    protected processCreateLegalConract(response: AxiosResponse): Promise<LegalContractDetailDtoOkListResponse> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -131,21 +143,24 @@ export class LegalHawkBackendClient {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 201) {
             const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
+            let result201: any = null;
+            let resultData201  = _responseText;
+            result201 = LegalContractDetailDtoOkListResponse.fromJS(resultData201);
+            return Promise.resolve<LegalContractDetailDtoOkListResponse>(result201);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<void>(null as any);
+        return Promise.resolve<LegalContractDetailDtoOkListResponse>(null as any);
     }
 
     /**
-     * @return OK
+     * @return OkListResponse
      */
-    legalContractsGET2(id: string, cancelToken?: CancelToken): Promise<void> {
+    getLegalContractById(id: string, cancelToken?: CancelToken): Promise<LegalContractDetailDtoOkListResponse> {
         let url_ = this.baseUrl + "/api/v1/legal-contracts/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -156,6 +171,7 @@ export class LegalHawkBackendClient {
             method: "GET",
             url: url_,
             headers: {
+                "Accept": "text/plain"
             },
             cancelToken
         };
@@ -167,11 +183,11 @@ export class LegalHawkBackendClient {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processLegalContractsGET2(_response);
+            return this.processGetLegalContractById(_response);
         });
     }
 
-    protected processLegalContractsGET2(response: AxiosResponse): Promise<void> {
+    protected processGetLegalContractById(response: AxiosResponse): Promise<LegalContractDetailDtoOkListResponse> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -183,19 +199,23 @@ export class LegalHawkBackendClient {
         }
         if (status === 200) {
             const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = LegalContractDetailDtoOkListResponse.fromJS(resultData200);
+            return Promise.resolve<LegalContractDetailDtoOkListResponse>(result200);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            return throwException("NotFound", status, _responseText, _headers);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<void>(null as any);
+        return Promise.resolve<LegalContractDetailDtoOkListResponse>(null as any);
     }
 
-    /**
-     * @return OK
-     */
-    legalContractsDELETE(id: string, cancelToken?: CancelToken): Promise<void> {
+    deleteLegalContractById(id: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/v1/legal-contracts/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -217,11 +237,11 @@ export class LegalHawkBackendClient {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processLegalContractsDELETE(_response);
+            return this.processDeleteLegalContractById(_response);
         });
     }
 
-    protected processLegalContractsDELETE(response: AxiosResponse): Promise<void> {
+    protected processDeleteLegalContractById(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -231,9 +251,9 @@ export class LegalHawkBackendClient {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 404) {
             const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
+            return throwException("NotFound", status, _responseText, _headers);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -293,6 +313,258 @@ export interface ILegalContractCreateOptions {
     description?: string | undefined;
 }
 
+export class LegalContractDetailDto implements ILegalContractDetailDto {
+    id?: string;
+    title!: string | undefined;
+    author!: string | undefined;
+    description?: string | undefined;
+    createdAt?: Date;
+    modifiedAt?: Date;
+
+    constructor(data?: ILegalContractDetailDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.title = _data["title"];
+            this.author = _data["author"];
+            this.description = _data["description"];
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.modifiedAt = _data["modifiedAt"] ? new Date(_data["modifiedAt"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): LegalContractDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LegalContractDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["title"] = this.title;
+        data["author"] = this.author;
+        data["description"] = this.description;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["modifiedAt"] = this.modifiedAt ? this.modifiedAt.toISOString() : <any>undefined;
+        return data;
+    }
+}
+
+export interface ILegalContractDetailDto {
+    id?: string;
+    title: string | undefined;
+    author: string | undefined;
+    description?: string | undefined;
+    createdAt?: Date;
+    modifiedAt?: Date;
+}
+
+export class LegalContractDetailDtoOkListResponse implements ILegalContractDetailDtoOkListResponse {
+    /** The HTTP response status codes */
+    code?: number | undefined;
+    data?: LegalContractDetailDto[] | undefined;
+    /** A text describing the response */
+    description?: string | undefined;
+    /** A response message delivered with the response */
+    message?: string | undefined;
+    count?: number;
+    totalCount?: number;
+
+    constructor(data?: ILegalContractDetailDtoOkListResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(LegalContractDetailDto.fromJS(item));
+            }
+            this.description = _data["description"];
+            this.message = _data["message"];
+            this.count = _data["count"];
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): LegalContractDetailDtoOkListResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new LegalContractDetailDtoOkListResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["description"] = this.description;
+        data["message"] = this.message;
+        data["count"] = this.count;
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface ILegalContractDetailDtoOkListResponse {
+    /** The HTTP response status codes */
+    code?: number | undefined;
+    data?: LegalContractDetailDto[] | undefined;
+    /** A text describing the response */
+    description?: string | undefined;
+    /** A response message delivered with the response */
+    message?: string | undefined;
+    count?: number;
+    totalCount?: number;
+}
+
+export class LegalContractListDto implements ILegalContractListDto {
+    id?: string;
+    title!: string | undefined;
+    author!: string | undefined;
+    description?: string | undefined;
+    createdAt?: Date;
+    modifiedAt?: Date;
+
+    constructor(data?: ILegalContractListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.title = _data["title"];
+            this.author = _data["author"];
+            this.description = _data["description"];
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.modifiedAt = _data["modifiedAt"] ? new Date(_data["modifiedAt"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): LegalContractListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LegalContractListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["title"] = this.title;
+        data["author"] = this.author;
+        data["description"] = this.description;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["modifiedAt"] = this.modifiedAt ? this.modifiedAt.toISOString() : <any>undefined;
+        return data;
+    }
+}
+
+export interface ILegalContractListDto {
+    id?: string;
+    title: string | undefined;
+    author: string | undefined;
+    description?: string | undefined;
+    createdAt?: Date;
+    modifiedAt?: Date;
+}
+
+export class LegalContractListDtoOkListResponse implements ILegalContractListDtoOkListResponse {
+    /** The HTTP response status codes */
+    code?: number | undefined;
+    data?: LegalContractListDto[] | undefined;
+    /** A text describing the response */
+    description?: string | undefined;
+    /** A response message delivered with the response */
+    message?: string | undefined;
+    count?: number;
+    totalCount?: number;
+
+    constructor(data?: ILegalContractListDtoOkListResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(LegalContractListDto.fromJS(item));
+            }
+            this.description = _data["description"];
+            this.message = _data["message"];
+            this.count = _data["count"];
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): LegalContractListDtoOkListResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new LegalContractListDtoOkListResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["description"] = this.description;
+        data["message"] = this.message;
+        data["count"] = this.count;
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+}
+
+export interface ILegalContractListDtoOkListResponse {
+    /** The HTTP response status codes */
+    code?: number | undefined;
+    data?: LegalContractListDto[] | undefined;
+    /** A text describing the response */
+    description?: string | undefined;
+    /** A response message delivered with the response */
+    message?: string | undefined;
+    count?: number;
+    totalCount?: number;
+}
+
 export class SwaggerException extends Error {
     message: string;
     status: number;
@@ -326,4 +598,7 @@ function throwException(message: string, status: number, response: string, heade
 
 function isAxiosError(obj: any): obj is AxiosError {
     return obj && obj.isAxiosError === true;
+}
+
+}
 }
