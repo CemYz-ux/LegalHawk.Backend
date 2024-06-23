@@ -1,6 +1,7 @@
 ﻿namespace LegalHawk.Backend.Controllers;
 
 [ApiController]
+[Produces("application/json")]
 public class LegalContractsController(ILegalContractService legalContractsService) : BaseController
 {
     [HttpGet("legal-contracts")]
@@ -37,6 +38,17 @@ public class LegalContractsController(ILegalContractService legalContractsServic
 
         return CreatedResponse(legalContract);
     }
+
+    [HttpPatch("legal-contracts/{id}")]
+    [SwaggerResponse(StatusCodes.Status201Created, nameof(UpdatedResponse), typeof(OkListResponse<LegalContractDetailDto>))]
+    [SwaggerOperation(OperationId = nameof(UpdateLegalConractAsync))]
+    public async Task<IActionResult> UpdateLegalConractAsync([FromRoute] Guid id, [FromBody] LegalContractUpdateOptions updateOptions)
+    {
+        var legalContract = await legalContractsService.UpdateLegalContractAsync(id, updateOptions);
+
+        return UpdatedResponse(legalContract);
+    }
+
 
     [HttpDelete("legal-contracts/{id}")]
     [SwaggerResponse(StatusCodes.Status404NotFound, nameof(NotFound))]

@@ -35,34 +35,17 @@ public class DatabaseContextSeeder(DatabaseContext dbContext)
     /// <returns></returns>
     private void AddLegalContracts()
     {
-        dbContext.LegalConracts.AddRange([
-            new() 
+        for (int i = 0; i < 20; i++)
+        {
+            dbContext.LegalConracts.Add(new()
             {
                 Id = Guid.NewGuid(),
-                Title = "Legal Contract 1",
-                Author = "Peter Doe",
-                Description = "This is a legal contract 1",
+                Title = $"Legal Contract {i + 1}",
+                Author = $"Author {i + 1}",
+                Description = $"This is a legal contract {i + 1}",
                 CreatedAt = DateTime.Now,
                 ModifiedAt = DateTime.Now
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Title = "Legal Contract 2",
-                Description = "This is a legal contract 2",
-                Author = "Max Doe",
-                CreatedAt = DateTime.Now,
-                ModifiedAt = DateTime.Now
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Title = "Legal Contract 3",
-                Author = "Alex Doe",
-                Description = "This is a legal contract 3",
-                CreatedAt = DateTime.Now,
-                ModifiedAt = DateTime.Now
-            }
-        ]);
+            });
+        }
     }
 }

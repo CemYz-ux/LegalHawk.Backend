@@ -36,6 +36,21 @@ public class LegalContractService(DatabaseContext dbContext, ISieveProcessor sie
         return LegalContractDetailDto.FromEntity(legalContract)!;
     }
 
+    public async Task<LegalContractDetailDto> UpdateLegalContractAsync(Guid legalContractId, LegalContractUpdateOptions updateOptions)
+    {
+        var foundLegalContract = await dbContext.LegalConracts.FirstOrDefaultAsync(q => q.Id == legalContractId)
+            ?? throw new NotFoundException($"The legal contract with the id {legalContractId} does not exists");
+
+        foundLegalContract.Author = updateOptions.Author;
+        foundLegalContract.Title = updateOptions.Title;
+        foundLegalContract.Description = updateOptions.Description;
+        foundLegalContract.ModifiedAt = DateTime.UtcNow;
+
+        await dbContext.SaveChangesAsync();
+
+        return LegalContractDetailDto.FromEntity(foundLegalContract)!;
+    }
+
     public async Task DeleteLegalContractAsync(Guid id)
     {
         var foundLegalContract = await dbContext.LegalConracts.AsNoTracking().FirstOrDefaultAsync(q => q.Id == id) 

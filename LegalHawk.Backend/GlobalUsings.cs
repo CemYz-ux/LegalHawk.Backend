@@ -9,6 +9,7 @@ global using LegalHawk.Backend.Models.Exceptions;
 global using LegalHawk.Backend.Models.Exceptions.Base;
 global using LegalHawk.Backend.Models.Reponses;
 global using LegalHawk.Backend.Models.Reponses.Base;
+global using LegalHawk.Backend.Models.UpdateOptions;
 global using LegalHawk.Backend.Seeders;
 global using LegalHawk.Backend.Services;
 global using Microsoft.AspNetCore.Mvc;

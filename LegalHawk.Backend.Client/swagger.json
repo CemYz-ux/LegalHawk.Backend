@@ -51,17 +51,7 @@
           "200": {
             "description": "OkListResponse",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/LegalContractListDtoOkListResponse"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LegalContractListDtoOkListResponse"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LegalContractListDtoOkListResponse"
                 }
@@ -101,17 +91,7 @@
           "201": {
             "description": "CreatedResponse",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/LegalContractDetailDtoOkListResponse"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LegalContractDetailDtoOkListResponse"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LegalContractDetailDtoOkListResponse"
                 }
@@ -142,17 +122,7 @@
           "200": {
             "description": "OkListResponse",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/LegalContractDetailDtoOkListResponse"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LegalContractDetailDtoOkListResponse"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LegalContractDetailDtoOkListResponse"
                 }
@@ -161,6 +131,54 @@
           },
           "404": {
             "description": "NotFound"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "LegalContracts"
+        ],
+        "operationId": "UpdateLegalConractAsync",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LegalContractUpdateOptions"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LegalContractUpdateOptions"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LegalContractUpdateOptions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "UpdatedResponse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegalContractDetailDtoOkListResponse"
+                }
+              }
+            }
           }
         }
       },
@@ -359,6 +377,37 @@
           "totalCount": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LegalContractUpdateOptions": {
+        "required": [
+          "author",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "author": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string",
+            "description": "The name of the author of the contract",
+            "example": "Mr. John Doe"
+          },
+          "title": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string",
+            "description": "The title of the contract",
+            "example": "Sale of a car"
+          },
+          "description": {
+            "maxLength": 512,
+            "type": "string",
+            "description": "A short description of the legal contract",
+            "nullable": true,
+            "example": "The contract is about the sale of a car, the car is a 2020 model and has a mileage of 1000km, the car is in good condition."
           }
         },
         "additionalProperties": false

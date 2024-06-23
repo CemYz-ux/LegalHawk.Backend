@@ -8,10 +8,10 @@
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
 
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelToken } from 'axios';
+import axios, { AxiosError } from 'axios';
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelToken } from 'axios';
 
-export module LegalHawkClientModule {
-namespace LegalHawk.Frontend.Client {
+export module LegalHawkBackendClientModule {
 
 export class LegalHawkBackendClient {
     protected instance: AxiosInstance;
@@ -57,7 +57,7 @@ export class LegalHawkBackendClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -117,7 +117,7 @@ export class LegalHawkBackendClient {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -171,7 +171,7 @@ export class LegalHawkBackendClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -207,6 +207,65 @@ export class LegalHawkBackendClient {
         } else if (status === 404) {
             const _responseText = response.data;
             return throwException("NotFound", status, _responseText, _headers);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<LegalContractDetailDtoOkListResponse>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return UpdatedResponse
+     */
+    updateLegalConract(id: string, body: LegalContractUpdateOptions | undefined, cancelToken?: CancelToken): Promise<LegalContractDetailDtoOkListResponse> {
+        let url_ = this.baseUrl + "/api/v1/legal-contracts/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "PATCH",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processUpdateLegalConract(_response);
+        });
+    }
+
+    protected processUpdateLegalConract(response: AxiosResponse): Promise<LegalContractDetailDtoOkListResponse> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 201) {
+            const _responseText = response.data;
+            let result201: any = null;
+            let resultData201  = _responseText;
+            result201 = LegalContractDetailDtoOkListResponse.fromJS(resultData201);
+            return Promise.resolve<LegalContractDetailDtoOkListResponse>(result201);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -565,8 +624,58 @@ export interface ILegalContractListDtoOkListResponse {
     totalCount?: number;
 }
 
+export class LegalContractUpdateOptions implements ILegalContractUpdateOptions {
+    /** The name of the author of the contract */
+    author!: string;
+    /** The title of the contract */
+    title!: string;
+    /** A short description of the legal contract */
+    description?: string | undefined;
+
+    constructor(data?: ILegalContractUpdateOptions) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.author = _data["author"];
+            this.title = _data["title"];
+            this.description = _data["description"];
+        }
+    }
+
+    static fromJS(data: any): LegalContractUpdateOptions {
+        data = typeof data === 'object' ? data : {};
+        let result = new LegalContractUpdateOptions();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["author"] = this.author;
+        data["title"] = this.title;
+        data["description"] = this.description;
+        return data;
+    }
+}
+
+export interface ILegalContractUpdateOptions {
+    /** The name of the author of the contract */
+    author: string;
+    /** The title of the contract */
+    title: string;
+    /** A short description of the legal contract */
+    description?: string | undefined;
+}
+
 export class SwaggerException extends Error {
-    message: string;
+    override message: string;
     status: number;
     response: string;
     headers: { [key: string]: any; };
@@ -600,5 +709,4 @@ function isAxiosError(obj: any): obj is AxiosError {
     return obj && obj.isAxiosError === true;
 }
 
-}
 }

@@ -9,5 +9,7 @@ public interface ILegalContractService
 
     public Task<LegalContractDetailDto> CreateLegalContractAsync(LegalContractCreateOptions createOptions);
 
+    public Task<LegalContractDetailDto> UpdateLegalContractAsync(Guid legalContractId, LegalContractUpdateOptions createOptions);
+
     public Task DeleteLegalContractAsync(Guid id);
 }
