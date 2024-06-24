@@ -105,7 +105,7 @@ export class LegalHawkBackendClient {
      * @param body (optional) 
      * @return CreatedResponse
      */
-    createLegalConract(body: LegalContractCreateOptions | undefined, cancelToken?: CancelToken): Promise<LegalContractDetailDtoOkListResponse> {
+    createLegalConract(body: LegalContractCreateOptions | undefined, cancelToken?: CancelToken): Promise<LegalContractDetailDtoCreatedResponse> {
         let url_ = this.baseUrl + "/api/v1/legal-contracts";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -133,7 +133,7 @@ export class LegalHawkBackendClient {
         });
     }
 
-    protected processCreateLegalConract(response: AxiosResponse): Promise<LegalContractDetailDtoOkListResponse> {
+    protected processCreateLegalConract(response: AxiosResponse): Promise<LegalContractDetailDtoCreatedResponse> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -147,20 +147,20 @@ export class LegalHawkBackendClient {
             const _responseText = response.data;
             let result201: any = null;
             let resultData201  = _responseText;
-            result201 = LegalContractDetailDtoOkListResponse.fromJS(resultData201);
-            return Promise.resolve<LegalContractDetailDtoOkListResponse>(result201);
+            result201 = LegalContractDetailDtoCreatedResponse.fromJS(resultData201);
+            return Promise.resolve<LegalContractDetailDtoCreatedResponse>(result201);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<LegalContractDetailDtoOkListResponse>(null as any);
+        return Promise.resolve<LegalContractDetailDtoCreatedResponse>(null as any);
     }
 
     /**
      * @return OkListResponse
      */
-    getLegalContractById(id: string, cancelToken?: CancelToken): Promise<LegalContractDetailDtoOkListResponse> {
+    getLegalContractById(id: string, cancelToken?: CancelToken): Promise<LegalContractDetailDtoOkResponse> {
         let url_ = this.baseUrl + "/api/v1/legal-contracts/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -187,7 +187,7 @@ export class LegalHawkBackendClient {
         });
     }
 
-    protected processGetLegalContractById(response: AxiosResponse): Promise<LegalContractDetailDtoOkListResponse> {
+    protected processGetLegalContractById(response: AxiosResponse): Promise<LegalContractDetailDtoOkResponse> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -201,8 +201,8 @@ export class LegalHawkBackendClient {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = LegalContractDetailDtoOkListResponse.fromJS(resultData200);
-            return Promise.resolve<LegalContractDetailDtoOkListResponse>(result200);
+            result200 = LegalContractDetailDtoOkResponse.fromJS(resultData200);
+            return Promise.resolve<LegalContractDetailDtoOkResponse>(result200);
 
         } else if (status === 404) {
             const _responseText = response.data;
@@ -212,14 +212,14 @@ export class LegalHawkBackendClient {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<LegalContractDetailDtoOkListResponse>(null as any);
+        return Promise.resolve<LegalContractDetailDtoOkResponse>(null as any);
     }
 
     /**
      * @param body (optional) 
      * @return UpdatedResponse
      */
-    updateLegalConract(id: string, body: LegalContractUpdateOptions | undefined, cancelToken?: CancelToken): Promise<LegalContractDetailDtoOkListResponse> {
+    updateLegalConract(id: string, body: LegalContractUpdateOptions | undefined, cancelToken?: CancelToken): Promise<LegalContractDetailDtoUpdatedResponse> {
         let url_ = this.baseUrl + "/api/v1/legal-contracts/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -250,7 +250,7 @@ export class LegalHawkBackendClient {
         });
     }
 
-    protected processUpdateLegalConract(response: AxiosResponse): Promise<LegalContractDetailDtoOkListResponse> {
+    protected processUpdateLegalConract(response: AxiosResponse): Promise<LegalContractDetailDtoUpdatedResponse> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -264,14 +264,14 @@ export class LegalHawkBackendClient {
             const _responseText = response.data;
             let result201: any = null;
             let resultData201  = _responseText;
-            result201 = LegalContractDetailDtoOkListResponse.fromJS(resultData201);
-            return Promise.resolve<LegalContractDetailDtoOkListResponse>(result201);
+            result201 = LegalContractDetailDtoUpdatedResponse.fromJS(resultData201);
+            return Promise.resolve<LegalContractDetailDtoUpdatedResponse>(result201);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<LegalContractDetailDtoOkListResponse>(null as any);
+        return Promise.resolve<LegalContractDetailDtoUpdatedResponse>(null as any);
     }
 
     deleteLegalContractById(id: string, cancelToken?: CancelToken): Promise<void> {
@@ -428,18 +428,16 @@ export interface ILegalContractDetailDto {
     modifiedAt?: Date;
 }
 
-export class LegalContractDetailDtoOkListResponse implements ILegalContractDetailDtoOkListResponse {
+export class LegalContractDetailDtoCreatedResponse implements ILegalContractDetailDtoCreatedResponse {
     /** The HTTP response status codes */
     code?: number | undefined;
-    data?: LegalContractDetailDto[] | undefined;
+    data?: LegalContractDetailDto;
     /** A text describing the response */
     description?: string | undefined;
     /** A response message delivered with the response */
     message?: string | undefined;
-    count?: number;
-    totalCount?: number;
 
-    constructor(data?: ILegalContractDetailDtoOkListResponse) {
+    constructor(data?: ILegalContractDetailDtoCreatedResponse) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -451,21 +449,15 @@ export class LegalContractDetailDtoOkListResponse implements ILegalContractDetai
     init(_data?: any) {
         if (_data) {
             this.code = _data["code"];
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data!.push(LegalContractDetailDto.fromJS(item));
-            }
+            this.data = _data["data"] ? LegalContractDetailDto.fromJS(_data["data"]) : <any>undefined;
             this.description = _data["description"];
             this.message = _data["message"];
-            this.count = _data["count"];
-            this.totalCount = _data["totalCount"];
         }
     }
 
-    static fromJS(data: any): LegalContractDetailDtoOkListResponse {
+    static fromJS(data: any): LegalContractDetailDtoCreatedResponse {
         data = typeof data === 'object' ? data : {};
-        let result = new LegalContractDetailDtoOkListResponse();
+        let result = new LegalContractDetailDtoCreatedResponse();
         result.init(data);
         return result;
     }
@@ -473,29 +465,129 @@ export class LegalContractDetailDtoOkListResponse implements ILegalContractDetai
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["code"] = this.code;
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
         data["description"] = this.description;
         data["message"] = this.message;
-        data["count"] = this.count;
-        data["totalCount"] = this.totalCount;
         return data;
     }
 }
 
-export interface ILegalContractDetailDtoOkListResponse {
+export interface ILegalContractDetailDtoCreatedResponse {
     /** The HTTP response status codes */
     code?: number | undefined;
-    data?: LegalContractDetailDto[] | undefined;
+    data?: LegalContractDetailDto;
     /** A text describing the response */
     description?: string | undefined;
     /** A response message delivered with the response */
     message?: string | undefined;
-    count?: number;
-    totalCount?: number;
+}
+
+export class LegalContractDetailDtoOkResponse implements ILegalContractDetailDtoOkResponse {
+    /** The HTTP response status codes */
+    code?: number | undefined;
+    data?: LegalContractDetailDto;
+    /** A text describing the response */
+    description?: string | undefined;
+    /** A response message delivered with the response */
+    message?: string | undefined;
+
+    constructor(data?: ILegalContractDetailDtoOkResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            this.data = _data["data"] ? LegalContractDetailDto.fromJS(_data["data"]) : <any>undefined;
+            this.description = _data["description"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): LegalContractDetailDtoOkResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new LegalContractDetailDtoOkResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["description"] = this.description;
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface ILegalContractDetailDtoOkResponse {
+    /** The HTTP response status codes */
+    code?: number | undefined;
+    data?: LegalContractDetailDto;
+    /** A text describing the response */
+    description?: string | undefined;
+    /** A response message delivered with the response */
+    message?: string | undefined;
+}
+
+export class LegalContractDetailDtoUpdatedResponse implements ILegalContractDetailDtoUpdatedResponse {
+    /** The HTTP response status codes */
+    code?: number | undefined;
+    data?: LegalContractDetailDto;
+    /** A text describing the response */
+    description?: string | undefined;
+    /** A response message delivered with the response */
+    message?: string | undefined;
+
+    constructor(data?: ILegalContractDetailDtoUpdatedResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            this.data = _data["data"] ? LegalContractDetailDto.fromJS(_data["data"]) : <any>undefined;
+            this.description = _data["description"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): LegalContractDetailDtoUpdatedResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new LegalContractDetailDtoUpdatedResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["description"] = this.description;
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface ILegalContractDetailDtoUpdatedResponse {
+    /** The HTTP response status codes */
+    code?: number | undefined;
+    data?: LegalContractDetailDto;
+    /** A text describing the response */
+    description?: string | undefined;
+    /** A response message delivered with the response */
+    message?: string | undefined;
 }
 
 export class LegalContractListDto implements ILegalContractListDto {

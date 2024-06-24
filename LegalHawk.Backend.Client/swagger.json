@@ -93,7 +93,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LegalContractDetailDtoOkListResponse"
+                  "$ref": "#/components/schemas/LegalContractDetailDtoCreatedResponse"
                 }
               }
             }
@@ -124,7 +124,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LegalContractDetailDtoOkListResponse"
+                  "$ref": "#/components/schemas/LegalContractDetailDtoOkResponse"
                 }
               }
             }
@@ -175,7 +175,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LegalContractDetailDtoOkListResponse"
+                  "$ref": "#/components/schemas/LegalContractDetailDtoUpdatedResponse"
                 }
               }
             }
@@ -273,7 +273,7 @@
         },
         "additionalProperties": false
       },
-      "LegalContractDetailDtoOkListResponse": {
+      "LegalContractDetailDtoCreatedResponse": {
         "type": "object",
         "properties": {
           "code": {
@@ -283,11 +283,7 @@
             "nullable": true
           },
           "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LegalContractDetailDto"
-            },
-            "nullable": true
+            "$ref": "#/components/schemas/LegalContractDetailDto"
           },
           "description": {
             "type": "string",
@@ -298,14 +294,56 @@
             "type": "string",
             "description": "A response message delivered with the response",
             "nullable": true
-          },
-          "count": {
+          }
+        },
+        "additionalProperties": false
+      },
+      "LegalContractDetailDtoOkResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
             "type": "integer",
-            "format": "int32"
+            "description": "The HTTP response status codes",
+            "format": "int32",
+            "nullable": true
           },
-          "totalCount": {
+          "data": {
+            "$ref": "#/components/schemas/LegalContractDetailDto"
+          },
+          "description": {
+            "type": "string",
+            "description": "A text describing the response",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "description": "A response message delivered with the response",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LegalContractDetailDtoUpdatedResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
             "type": "integer",
-            "format": "int32"
+            "description": "The HTTP response status codes",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/LegalContractDetailDto"
+          },
+          "description": {
+            "type": "string",
+            "description": "A text describing the response",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "description": "A response message delivered with the response",
+            "nullable": true
           }
         },
         "additionalProperties": false

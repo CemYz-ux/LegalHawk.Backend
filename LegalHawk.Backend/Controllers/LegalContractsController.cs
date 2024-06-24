@@ -18,7 +18,7 @@ public class LegalContractsController(ILegalContractService legalContractsServic
     }
 
     [HttpGet("legal-contracts/{id}")]
-    [SwaggerResponse(StatusCodes.Status200OK, nameof(OkListResponse), typeof(OkListResponse<LegalContractDetailDto>))]
+    [SwaggerResponse(StatusCodes.Status200OK, nameof(OkListResponse), typeof(OkResponse<LegalContractDetailDto>))]
     [SwaggerResponse(StatusCodes.Status404NotFound, nameof(NotFound))]
     [SwaggerOperation(OperationId = nameof(GetLegalContractByIdAsync))]
     public async Task<IActionResult> GetLegalContractByIdAsync([FromRoute] Guid id)
@@ -30,7 +30,7 @@ public class LegalContractsController(ILegalContractService legalContractsServic
     }
 
     [HttpPost("legal-contracts")]
-    [SwaggerResponse(StatusCodes.Status201Created, nameof(CreatedResponse), typeof(OkListResponse<LegalContractDetailDto>))]
+    [SwaggerResponse(StatusCodes.Status201Created, nameof(CreatedResponse), typeof(CreatedResponse<LegalContractDetailDto>))]
     [SwaggerOperation(OperationId = nameof(CreateLegalConractAsync))]
     public async Task<IActionResult> CreateLegalConractAsync([FromBody] LegalContractCreateOptions createOptions)
     {
@@ -40,7 +40,7 @@ public class LegalContractsController(ILegalContractService legalContractsServic
     }
 
     [HttpPatch("legal-contracts/{id}")]
-    [SwaggerResponse(StatusCodes.Status201Created, nameof(UpdatedResponse), typeof(OkListResponse<LegalContractDetailDto>))]
+    [SwaggerResponse(StatusCodes.Status201Created, nameof(UpdatedResponse), typeof(UpdatedResponse<LegalContractDetailDto>))]
     [SwaggerOperation(OperationId = nameof(UpdateLegalConractAsync))]
     public async Task<IActionResult> UpdateLegalConractAsync([FromRoute] Guid id, [FromBody] LegalContractUpdateOptions updateOptions)
     {
